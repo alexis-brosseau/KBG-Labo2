@@ -94,3 +94,13 @@ export const decomposePath = (url) => {
     }
     return { isAPI, model, controllerName, action, id, queryString, params };
 }
+
+/////////////////////////////////////////////////////////////////////
+
+// returns the first missing key in an object
+export function missingKeys(object, keys) {
+    for (let i = 0; i < keys.length; i++)
+        if (!object[keys[i]])
+            return keys[i];
+    return null;
+}
