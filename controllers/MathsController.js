@@ -27,14 +27,14 @@ export default class MathsController extends Controller {
         }
 
         let operations = {
-            "+": this.add,
-            "-": this.subtract,
-            "*": this.multiply,
-            "/": this.divide,
-            "%": this.modulo,
-            "!": this.factorial,
-            "n": this.isPrime,
-            "np": this.nthPrime
+            "+": () => this.add(),
+            "-": () => this.subtract(),
+            "*": () => this.multiply(),
+            "/": () => this.divide(),
+            "%": () => this.modulo(),
+            "!": () => this.factorial(),
+            "n": () => this.isPrime(),
+            "np": () => this.nthPrime()
         };
 
         // Check if the operation is valid
@@ -45,7 +45,7 @@ export default class MathsController extends Controller {
         }
 
         // Perform the operation
-        await operation(this.HttpContext.payload).then((result) => {
+        await operation().then((result) => {
             this.HttpContext.payload["value"] = result;
             this.HttpContext.response.JSON(this.HttpContext.payload);
         }).catch((error) => {
@@ -65,18 +65,18 @@ export default class MathsController extends Controller {
         this.HttpContext.response.notImplemented("DELETE method is not supported");
     }
 
-    add(payload) {
+    add() {
         return new Promise((resolve, reject) => {
 
-            let missingKey = missingKeys(payload, ["x", "y"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["x", "y"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let x = parseFloat(payload.x);
+            let x = parseFloat(this.HttpContext.payload.x);
             if (isNaN(x))
                 reject("'x' parameter is not a number");
 
-            let y = parseFloat(payload.y);
+            let y = parseFloat(this.HttpContext.payload.y);
             if (isNaN(y))
                 reject("'y' parameter is not a number");
 
@@ -84,18 +84,18 @@ export default class MathsController extends Controller {
         });
     }
 
-    subtract(payload) {
+    subtract() {
         return new Promise((resolve, reject) => {
 
-            let missingKey = missingKeys(payload, ["x", "y"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["x", "y"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let x = parseFloat(payload.x);
+            let x = parseFloat(this.HttpContext.payload.x);
             if (isNaN(x))
                 reject("'x' parameter is not a number");
 
-            let y = parseFloat(payload.y);
+            let y = parseFloat(this.HttpContext.payload.y);
             if (isNaN(y))
                 reject("'y' parameter is not a number");
 
@@ -103,18 +103,18 @@ export default class MathsController extends Controller {
         });
     }
 
-    multiply(payload) {
+    multiply() {
         return new Promise((resolve, reject) => {
 
-            let missingKey = missingKeys(payload, ["x", "y"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["x", "y"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let x = parseFloat(payload.x);
+            let x = parseFloat(this.HttpContext.payload.x);
             if (isNaN(x))
                 reject("'x' parameter is not a number");
 
-            let y = parseFloat(payload.y);
+            let y = parseFloat(this.HttpContext.payload.y);
             if (isNaN(y))
                 reject("'y' parameter is not a number");
 
@@ -122,18 +122,18 @@ export default class MathsController extends Controller {
         });
     }
 
-    divide(payload) {
+    divide() {
         return new Promise((resolve, reject) => {
 
-            let missingKey = missingKeys(payload, ["x", "y"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["x", "y"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let x = parseFloat(payload.x);
+            let x = parseFloat(this.HttpContext.payload.x);
             if (isNaN(x))
                 reject("'x' parameter is not a number");
 
-            let y = parseFloat(payload.y);
+            let y = parseFloat(this.HttpContext.payload.y);
             if (isNaN(y))
                 reject("'y' parameter is not a number");
 
@@ -144,18 +144,18 @@ export default class MathsController extends Controller {
         });
     }
 
-    modulo(payload) {
+    modulo() {
         return new Promise((resolve, reject) => {
 
-            let missingKey = missingKeys(payload, ["x", "y"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["x", "y"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let x = parseFloat(payload.x);
+            let x = parseFloat(this.HttpContext.payload.x);
             if (isNaN(x))
                 reject("'x' parameter is not a number");
 
-            let y = parseFloat(payload.y);
+            let y = parseFloat(this.HttpContext.payload.y);
             if (isNaN(y))
                 reject("'y' parameter is not a number");
 
@@ -166,14 +166,14 @@ export default class MathsController extends Controller {
         });
     }
 
-    factorial(payload) {
+    factorial() {
         return new Promise((resolve, reject) => {
 
-            let missingKey = missingKeys(payload, ["n"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["n"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let n = parseFloat(payload.n);
+            let n = parseFloat(this.HttpContext.payload.n);
             if (isNaN(n))
                 reject("'n' parameter is not a number");
 
@@ -184,14 +184,14 @@ export default class MathsController extends Controller {
         });
     }
 
-    isPrime(payload) {
+    isPrime() {
         return new Promise((resolve, reject) => {
 
-            let missingKey = missingKeys(payload, ["n"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["n"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let n = parseFloat(payload.n);
+            let n = parseFloat(this.HttpContext.payload.n);
             if (isNaN(n))
                 reject("'n' parameter is not a number");
 
@@ -202,14 +202,14 @@ export default class MathsController extends Controller {
         });
     }
 
-    nthPrime(payload) {
+    nthPrime() {
         return new Promise((resolve, reject) => {
             
-            let missingKey = missingKeys(payload, ["n"]);
+            let missingKey = missingKeys(this.HttpContext.payload, ["n"]);
             if (missingKey)
                 reject(`'${missingKey}' parameter is missing`);
 
-            let n = parseFloat(payload.n);
+            let n = parseFloat(this.HttpContext.payload.n);
             if (isNaN(n))
                 reject("'n' parameter is not a number");
 
