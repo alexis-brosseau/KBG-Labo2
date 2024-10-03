@@ -12,7 +12,8 @@
         <div class="url-box">
             <label for="api-url">URL du service:</label>
             <input type="text" id="api-url" value="https://votre-serveur.glitch.me/api/maths">
-            <button id="start-tests">Démarrer</button>
+            <button type="button" id="start-tests">Démarrer</button>
+            <button type="button" onclick="() => {window.location.href = './MathTest/help.html'}">Aide</button>
         </div>
         <div class="results" id="results">
             <h2>Tests</h2>
@@ -20,31 +21,29 @@
         </div>
     </div>
 
-<script>
-    
-document.getElementById('start-tests').addEventListener('click', async () => {
-    const apiUrl = document.getElementById('api-url').value;
-    const tests = [
-        { op: '+', x: -111, y: -244 },
-        { op: '-', x: 50, y: 25 },
-        { op: '*', x: 10, y: 5 },
-        { op: '/', x: 100, y: 4 },
-        { op: '%', x: 50, y: 7 },
-        { op: '!', n: 5 },
-        { op: 'p', n: 11 },  
-        { op: 'np', n: 5 }   
-    ];
+    <script>
+        document.getElementById('start-tests').addEventListener('click', async () => {
+            const apiUrl = document.getElementById('api-url').value;
+            const tests = [
+                { op: '+', x: -111, y: -244 },
+                { op: '-', x: 50, y: 25 },
+                { op: '*', x: 10, y: 5 },
+                { op: '/', x: 100, y: 4 },
+                { op: '%', x: 50, y: 7 },
+                { op: '!', n: 5 },
+                { op: 'p', n: 11 },  
+                { op: 'np', n: 5 }   
+            ];
 
-    const output = document.getElementById('output');
-    output.textContent = ''; 
+            const output = document.getElementById('output');
+            output.textContent = ''; 
 
-    for (const test of tests) {
-        const result = await API_RunTest(test);
-        output.textContent += `Test ${JSON.stringify(test)}:\n`;
-        output.textContent += `Résultat: ${JSON.stringify(result)}\n\n`;
-    }
-});
-</script>
-
+            for (const test of tests) {
+                const result = await webAPI_getMaths(test);
+                output.textContent += `Test ${JSON.stringify(test)}:\n`;
+                output.textContent += `Résultat: ${JSON.stringify(result)}\n\n`;
+            }
+        });
+    </script>
 </body>
 </html>

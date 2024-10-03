@@ -5,7 +5,7 @@ function API_getcurrentHttpError() {
     return currentHttpError;
 }
 
-function API_RunTest(test) {
+function webAPI_getMaths(test) {
     return new Promise(resolve => {
         const params = new URLSearchParams(test).toString();
         $.ajax({
@@ -24,5 +24,5 @@ function API_RunTest(test) {
 }
 
 function API_RunAllTests(tests) {
-    return Promise.all(tests.map(test => API_RunTest(test)));
+    return Promise.all(tests.map(test => webAPI_getMaths(test)));
 }
