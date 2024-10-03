@@ -2,7 +2,7 @@ hr {
     border: 2px solid rgb(160, 205, 250);
     border-radius: 4px;
  }
- .containerTest{
+ .TestResultContainer{
    overflow: auto;
  }
  

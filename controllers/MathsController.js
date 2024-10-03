@@ -14,10 +14,12 @@ export default class MathsController extends Controller {
     }
 
     async get() {
+
         if (findMissingKeys(this.HttpContext.payload, ["op"])) {
             this.throw("'op' parameter is missing");
             return;
         }
+        
 
         // Url '+' sign is converted to ' ' by the browser, so we need to convert it back
         if (this.HttpContext.payload["op"] == " ") {
