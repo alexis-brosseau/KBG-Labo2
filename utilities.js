@@ -98,9 +98,17 @@ export const decomposePath = (url) => {
 /////////////////////////////////////////////////////////////////////
 
 // returns the first missing key in an object
-export function missingKeys(object, keys) {
+export function findMissingKeys(object, keys) {
     for (let i = 0; i < keys.length; i++)
         if (!object[keys[i]])
             return keys[i];
+    return null;
+}
+
+// returns the first key in an object that is not in the keys array
+export function findExcessKeys(object, keys) {
+    for (let key in object)
+        if (!keys.includes(key))
+            return key;
     return null;
 }
