@@ -12,6 +12,32 @@ export default class MathsController extends Controller {
         this.HttpContext.response.JSON(this.HttpContext.payload);
         return;
     }
+    /*
+    
+  const erreur = {};
+    if (['+', '-', '*', '/', '%'].includes(op)) {
+      if (!x || isNaN(x)) erreur.x = "'x' parameter is not a number";
+      if (!y || isNaN(y)) erreur.y = "'y' parameter is not a number";
+    }
+    if (op === '!') {
+      if (!n || isNaN(n) || !Number.isInteger(+n)) {
+        erreur.n = "'n' parameter is not a valid integer";
+      }
+    }
+    if (op === 'p') {
+      if (!n || isNaN(n) || !Number.isInteger(+n)) {
+        erreur.n = "'n' parameter is not a valid integer";
+      }
+    }
+    if (op === 'np') {
+      if (!n || isNaN(n) || !Number.isInteger(+n)) {
+        erreur.n = "'n' parameter is not a valid integer";
+      }
+    }
+    
+
+    
+    */ 
 
     async get() {
         if (missingKeys(this.HttpContext.payload, ["op"])) {
@@ -62,6 +88,23 @@ export default class MathsController extends Controller {
     delete() {
         this.HttpContext.response.notImplemented("DELETE method is not supported");
     }
+    /* 
+    validerParametre(parametres){
+      const missingKey = missingKeys(this.HttpContext.payload, parametres)
+      if (missingKey) throw new Error(`'${missingKey}' parameter is missing`);
+
+      const params = requiredParams.map(param => parseFloat(this.HttpContext.payload[param]));
+      if (params.some(isNaN)) throw new Error('Parameters must be valid numbers');
+
+      return params;
+     }
+
+      async add() {
+        const [x, y] = this. validerParametre(["x", "y"]);
+        return x + y;
+    }
+
+        */
 
     add() {
         return new Promise((resolve, reject) => {
