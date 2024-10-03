@@ -20,7 +20,31 @@
         </div>
     </div>
 
+<script>
+    
+document.getElementById('start-tests').addEventListener('click', async () => {
+    const apiUrl = document.getElementById('api-url').value;
+    const tests = [
+        { op: '+', x: -111, y: -244 },
+        { op: '-', x: 50, y: 25 },
+        { op: '*', x: 10, y: 5 },
+        { op: '/', x: 100, y: 4 },
+        { op: '%', x: 50, y: 7 },
+        { op: '!', n: 5 },
+        { op: 'p', n: 11 },  
+        { op: 'np', n: 5 }   
+    ];
 
+    const output = document.getElementById('output');
+    output.textContent = ''; 
+
+    for (const test of tests) {
+        const result = await API_RunTest(test);
+        output.textContent += `Test ${JSON.stringify(test)}:\n`;
+        output.textContent += `Résultat: ${JSON.stringify(result)}\n\n`;
+    }
+});
+</script>
 
 </body>
 </html>
