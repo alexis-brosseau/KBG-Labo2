@@ -149,8 +149,8 @@ export default class MathsController extends Controller {
                 reject(error);
             });
 
-            if (y == 0)
-                (x == 0) ? resolve("NaN") : resolve("Infinity");
+            if (params.y == 0)
+                (params.x == 0) ? resolve("NaN") : resolve("Infinity");
 
             resolve(params.x / params.y);
         });
@@ -168,7 +168,7 @@ export default class MathsController extends Controller {
                 reject(error);
             });
 
-            if (y == 0)
+            if (params.y == 0)
                 resolve("NaN");
 
             resolve(params.x % params.y);
