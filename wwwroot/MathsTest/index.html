@@ -21,6 +21,7 @@
         </div>
     </div>
 
+    <script src="js/API_Maths.js"></script>
     <script>
         document.getElementById('start-tests').addEventListener('click', async () => {
             const apiUrl = document.getElementById('api-url').value;
@@ -31,8 +32,8 @@
                 { op: '/', x: 100, y: 4 },
                 { op: '%', x: 50, y: 7 },
                 { op: '!', n: 5 },
-                { op: 'p', n: 11 },  
-                { op: 'np', n: 5 }   
+                { op: 'p', n: 11 },
+                { op: 'np', n: 5 }
             ];
 
             const output = document.getElementById('output');
