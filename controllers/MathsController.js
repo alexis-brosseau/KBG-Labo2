@@ -89,23 +89,13 @@ export default class MathsController extends Controller {
     delete() {
         this.HttpContext.response.notImplemented("DELETE method is not supported");
     }
-    /* 
-    validerParametre(parametres){
-      const missingKey = missingKeys(this.HttpContext.payload, parametres)
-      if (missingKey) throw new Error(`'${missingKey}' parameter is missing`);
 
-      const params = requiredParams.map(param => parseFloat(this.HttpContext.payload[param]));
+    parseFloats(parametres){
+      const params = parametres.map(param => parseFloat(this.HttpContext.payload[param]));
       if (params.some(isNaN)) throw new Error('Parameters must be valid numbers');
 
       return params;
-     }
-
-      async add() {
-        const [x, y] = this. validerParametre(["x", "y"]);
-        return x + y;
     }
-
-        */
 
     verifyPayload(keys) {
         let excessKey = findExcessKeys(this.HttpContext.payload, ["op", ...keys]);
