@@ -1,5 +1,3 @@
-import CourseModel from '../models/course.js';
-import Repository from '../models/repository.js';
 import Controller from './Controller.js';
 import { missingKeys } from '../utilities.js';
 import { factorial, isPrime, findPrime } from '../mathUtilities.js';
