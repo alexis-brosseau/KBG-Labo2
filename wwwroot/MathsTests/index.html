@@ -78,13 +78,14 @@
             let errorCount = 0;
             for (const test of tests) {
                 await webAPI_getMaths(test).then( (result) => {
-                    if (result.hasOwnProperty('error'))
-                        errorCount++;
 
-                    $("#results").append("OK ---> " + JSON.stringify(result)).append($("<br>"));
-                }).catch( (error) => {
-                    errorCount++;
-                    $("#results").append("ERREUR ---> " + error).append($("<br>"));
+                    let status = "OK";
+                    if (verify(test, result)) {
+                        let status = "ERREUR";
+                        errorCount++;
+                    }
+
+                    $("#results").append(status + " ---> " + JSON.stringify(result)).append($("<br>"));
                 });
             }
 
@@ -99,6 +100,10 @@
                 $("#verdict").text("Bravo!!! Aucun problème!");
             }
         });
+
+        function verify(test, result) {
+            return true;
+        }
     </script>
 </body>
 </html>
