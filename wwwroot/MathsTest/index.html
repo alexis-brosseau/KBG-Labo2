@@ -4,45 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test du service /api/maths</title>
+    <link rel="stylesheet" href="./MathsTest/css/site.css">    
 </head>
 <body>
 
     <div class="container">
         <h1>Test du service /api/maths</h1>
-        <div class="url-box">
-            <label for="api-url">URL du service:</label>
-            <input type="text" id="api-url" value="https://votre-serveur.glitch.me/api/maths">
-            <button type="button" id="start-tests">Démarrer</button>
-            <button type="button" onclick="() => {window.location.href = './MathTest/help.html'}">Aide</button>
-        </div>
-        <div class="results" id="results">
-            <h2>Tests</h2>
-            <pre id="output"></pre>
-        </div>
+        <fieldset>
+            <legend>URL du service</legend>
+            <input type="text" id="api-url" value="localhost:5000">
+            <span>/api/maths</span>
+            <button type="button" id="start-tests">Démarrer le test</button>
+            <button type="button" onclick="goHelp()">Aide</button>
+        </fieldset>
+
+        <fieldset class="container">
+            <legend>Tests</legend>
+            <pre id="results"></pre>
+        </fieldset>
+        
+        <fieldset class="container">
+            <legend>Verdict</legend>
+            <pre id="verdict"></pre>
+        </fieldset>
+
     </div>
 
-    <script src="js/API_Maths.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="./MathsTest/js/API_Maths.js"></script>
+    
+
     <script>
-        document.getElementById('start-tests').addEventListener('click', async () => {
-            const apiUrl = document.getElementById('api-url').value;
+        function goHelp() {
+            window.location.href = "./MathsTest/help.html";
+        }
+
+        $("#start-tests").click( async () => {
+            const apiUrl = $("#api-url").text() + "/api/maths";
             const tests = [
-                { op: '+', x: -111, y: -244 },
-                { op: '-', x: 50, y: 25 },
-                { op: '*', x: 10, y: 5 },
-                { op: '/', x: 100, y: 4 },
-                { op: '%', x: 50, y: 7 },
-                { op: '!', n: 5 },
-                { op: 'p', n: 11 },
-                { op: 'np', n: 5 }
+            {"op": "+", "x": -111, "y": -244},
+            {"op": "-", "x": 1, "y": "abc"},
+            {"n": "a", "op": "p"},
+            {"op": "-", "x": 111, "y": 244},
+            {"op": "*", "x": 11.56, "y": 244.12345},
+            {"op": "/", "x": 99, "y": 11.06},
+            {"op": "/", "x": 99, "y": 0},
+            {"op": "/", "x": 0, "y": 0},
+            {"op": "%", "x": 5, "y": 5},
+            {"op": "%", "x": 100, "y": 13},
+            {"op": "%", "x": 100, "y": 0},
+            {"op": "%", "x": 0, "y": 0},
+            {"n": 0, "op": "!"},
+            {"n": 0, "op": "p"},
+            {"n": 1, "op": "p"},
+            {"n": 2, "op": "p"},
+            {"n": 5, "op": "p"},
+            {"n": 6, "op": "p"},
+            {"n": 6.5, "op": "p"},
+            {"n": 113, "op": "p"},
+            {"n": 114, "op": "p"},
+            {"n": 1, "op": "np"},
+            {"n": 30, "op": "np"},
+            {"X": "111", "op": "+", "y": "244"},
+            {"Y": "244", "op": "+", "x": 111},
+            {"op": "+", "x": 111, "y": 244, "z": "0"},
+            {"n": 5, "op": "!", "z": "0"},
+            {"n": 5.5, "op": "!"},
+            {"z": "0"},
+            {"n": -5, "op": "!"},
+            {"x": null},
             ];
 
-            const output = document.getElementById('output');
-            output.textContent = ''; 
+            $("#results").text('');
 
+            let errorCount = 0;
             for (const test of tests) {
-                const result = await webAPI_getMaths(test);
-                output.textContent += `Test ${JSON.stringify(test)}:\n`;
-                output.textContent += `Résultat: ${JSON.stringify(result)}\n\n`;
+                await webAPI_getMaths(test).then( (result) => {
+                    let status = "OK";
+                    if (result.hasOwnProperty('error')) {
+                        errorCount++;
+                        status = "ERROR";
+                    }
+                    $("#results").append(status + " ---> " + JSON.stringify(result)).append($("<br>"));
+                });
+            }
+
+            if (errorCount > 0) {
+                if(errorCount == 1){
+                    $("#verdict").text("Tests terminés avec " + errorCount + " erreur.");
+                }
+                else{
+                    $("#verdict").text("Tests terminés avec " + errorCount + " erreurs."); 
+                }
+            } else {
+                $("#verdict").text("Bravo!!! Aucun problème!");
             }
         });
     </script>

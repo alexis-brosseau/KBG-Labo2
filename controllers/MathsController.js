@@ -31,7 +31,7 @@ export default class MathsController extends Controller {
             "/": () => this.divide(),
             "%": () => this.modulo(),
             "!": () => this.factorial(),
-            "n": () => this.isPrime(),
+            "p": () => this.isPrime(),
             "np": () => this.nthPrime()
         };
 
