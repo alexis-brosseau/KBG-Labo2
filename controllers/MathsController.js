@@ -187,7 +187,7 @@ export default class MathsController extends Controller {
                 reject(error);
             });
 
-            if (n%1 != 0 || n < 1)
+            if (params.n%1 != 0 || params.n < 1)
                 reject("'n' parameter must be an integer > 0");
 
             resolve(factorial(params.n));
@@ -206,7 +206,7 @@ export default class MathsController extends Controller {
                 reject(error);
             });
 
-            if (n%1 != 0 || n < 1)
+            if (params.n%1 != 0 || params.n < 1)
                 reject("'n' parameter must be an integer > 0");
 
             resolve(isPrime(params.n));
@@ -225,7 +225,7 @@ export default class MathsController extends Controller {
                 reject(error);
             });
 
-            if (n%1 != 0 || n < 1)
+            if (params.n%1 != 0 || params.n < 1)
                 reject("'n' parameter must be an integer > 0");
 
             resolve(findPrime(params.n));
