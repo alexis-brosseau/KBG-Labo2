@@ -15,7 +15,6 @@ export default class MathsController extends Controller {
 
     async get() {
         if (findMissingKeys(this.HttpContext.payload, ["op"])) {
-            this.throw(this.HttpContext.payload);
             this.throw("'op' parameter is missing");
             return;
         }
@@ -65,13 +64,13 @@ export default class MathsController extends Controller {
     }
 
     verifyPayload(keys) {
-        let excessKey = findExcessKeys(this.HttpContext.payload, ["op", ...keys]);
-        if (excessKey)
-            return `Too many parameters`;
-
         let missingKey = findMissingKeys(this.HttpContext.payload, keys);
         if (missingKey)
             return `'${missingKey}' parameter is missing`;
+        
+        let excessKey = findExcessKeys(this.HttpContext.payload, ["op", ...keys]);
+        if (excessKey)
+            return `Too many parameters`;
         
         return null;
     }
