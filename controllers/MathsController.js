@@ -12,32 +12,6 @@ export default class MathsController extends Controller {
         this.HttpContext.response.JSON(this.HttpContext.payload);
         return;
     }
-    /*
-    
-  const erreur = {};
-    if (['+', '-', '*', '/', '%'].includes(op)) {
-      if (!x || isNaN(x)) erreur.x = "'x' parameter is not a number";
-      if (!y || isNaN(y)) erreur.y = "'y' parameter is not a number";
-    }
-    if (op === '!') {
-      if (!n || isNaN(n) || !Number.isInteger(+n)) {
-        erreur.n = "'n' parameter is not a valid integer";
-      }
-    }
-    if (op === 'p') {
-      if (!n || isNaN(n) || !Number.isInteger(+n)) {
-        erreur.n = "'n' parameter is not a valid integer";
-      }
-    }
-    if (op === 'np') {
-      if (!n || isNaN(n) || !Number.isInteger(+n)) {
-        erreur.n = "'n' parameter is not a valid integer";
-      }
-    }
-    
-
-    
-    */ 
 
     async get() {
         if (findMissingKeys(this.HttpContext.payload, ["op"])) {
@@ -90,13 +64,6 @@ export default class MathsController extends Controller {
         this.HttpContext.response.notImplemented("DELETE method is not supported");
     }
 
-    parseFloats(parametres){
-      const params = parametres.map(param => parseFloat(this.HttpContext.payload[param]));
-      if (params.some(isNaN)) throw new Error('Parameters must be valid numbers');
-
-      return params;
-    }
-
     verifyPayload(keys) {
         let excessKey = findExcessKeys(this.HttpContext.payload, ["op", ...keys]);
         if (excessKey)
@@ -109,158 +76,159 @@ export default class MathsController extends Controller {
         return null;
     }
 
-    add() {
+    parseFloats(parametres){
         return new Promise((resolve, reject) => {
+            let params = [];
+            for (let i = 0; i < parametres.length; i++) {
+                let value = parseFloat(parametres[i]);
+                if (isNaN(value))
+                    reject(`'${this.HttpContext.payload[i]}' parameter is not a number`);
+                params.push(value);
+            }
+            resolve(params);
+        });
+    }
+
+    add() {
+        return new Promise(async (resolve, reject) => {
 
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let x = parseFloat(this.HttpContext.payload.x);
-            if (isNaN(x))
-                reject("'x' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
-            let y = parseFloat(this.HttpContext.payload.y);
-            if (isNaN(y))
-                reject("'y' parameter is not a number");
-
-            resolve(x + y);
+            resolve(params.x + params.y);
         });
     }
 
     subtract() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let x = parseFloat(this.HttpContext.payload.x);
-            if (isNaN(x))
-                reject("'x' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
-            let y = parseFloat(this.HttpContext.payload.y);
-            if (isNaN(y))
-                reject("'y' parameter is not a number");
-
-            resolve(x - y);
+            resolve(params.x - params.y);
         });
     }
 
     multiply() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let x = parseFloat(this.HttpContext.payload.x);
-            if (isNaN(x))
-                reject("'x' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
-            let y = parseFloat(this.HttpContext.payload.y);
-            if (isNaN(y))
-                reject("'y' parameter is not a number");
-
-            resolve(x * y);
+            resolve(params.x * params.y);
         });
     }
 
     divide() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let x = parseFloat(this.HttpContext.payload.x);
-            if (isNaN(x))
-                reject("'x' parameter is not a number");
-
-            let y = parseFloat(this.HttpContext.payload.y);
-            if (isNaN(y))
-                reject("'y' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
             if (y == 0)
                 (x == 0) ? resolve("NaN") : resolve("Infinity");
 
-            resolve(x / y);
+            resolve(params.x / params.y);
         });
     }
 
     modulo() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let x = parseFloat(this.HttpContext.payload.x);
-            if (isNaN(x))
-                reject("'x' parameter is not a number");
-
-            let y = parseFloat(this.HttpContext.payload.y);
-            if (isNaN(y))
-                reject("'y' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
             if (y == 0)
                 resolve("NaN");
 
-            resolve(x % y);
+            resolve(params.x % params.y);
         });
     }
 
     factorial() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let n = parseFloat(this.HttpContext.payload.n);
-            if (isNaN(n))
-                reject("'n' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
-            if (n%1 != 0 || n < 0)
+            if (n%1 != 0 || n < 1)
                 reject("'n' parameter must be an integer > 0");
 
-            resolve(factorial(n));
+            resolve(factorial(params.n));
         });
     }
 
     isPrime() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let n = parseFloat(this.HttpContext.payload.n);
-            if (isNaN(n))
-                reject("'n' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
-            if (n%1 != 0 || n < 0)
+            if (n%1 != 0 || n < 1)
                 reject("'n' parameter must be an integer > 0");
 
-            resolve(isPrime(n));
+            resolve(isPrime(params.n));
         });
     }
 
     nthPrime() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             
             let payloadError = this.verifyPayload(["x", "y"]);
             if (payloadError != null)
                 reject(payloadError);
 
-            let n = parseFloat(this.HttpContext.payload.n);
-            if (isNaN(n))
-                reject("'n' parameter is not a number");
+            let params = await this.parseFloats(this.HttpContext.payload)
+            .catch((error) => {
+                reject(error);
+            });
 
-            if (n%1 != 0 || n < 0)
+            if (n%1 != 0 || n < 1)
                 reject("'n' parameter must be an integer > 0");
 
-            resolve(findPrime(n));
+            resolve(findPrime(params.n));
         });
     }
 }
