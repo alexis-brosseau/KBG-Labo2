@@ -67,7 +67,7 @@ export default class MathsController extends Controller {
     verifyPayload(keys) {
         let excessKey = findExcessKeys(this.HttpContext.payload, ["op", ...keys]);
         if (excessKey)
-            return `'${excessKey}' too many parameters`;
+            return `Too many parameters`;
 
         let missingKey = findMissingKeys(this.HttpContext.payload, keys);
         if (missingKey)
@@ -180,7 +180,7 @@ export default class MathsController extends Controller {
     factorial() {
         return new Promise((resolve, reject) => {
 
-            let payloadError = this.verifyPayload(["x", "y"]);
+            let payloadError = this.verifyPayload(["n"]);
             if (payloadError != null)
                 reject(payloadError);
 
@@ -198,7 +198,7 @@ export default class MathsController extends Controller {
     isPrime() {
         return new Promise((resolve, reject) => {
 
-            let payloadError = this.verifyPayload(["x", "y"]);
+            let payloadError = this.verifyPayload(["n"]);
             if (payloadError != null)
                 reject(payloadError);
 
@@ -216,7 +216,7 @@ export default class MathsController extends Controller {
     nthPrime() {
         return new Promise((resolve, reject) => {
             
-            let payloadError = this.verifyPayload(["x", "y"]);
+            let payloadError = this.verifyPayload(["n"]);
             if (payloadError != null)
                 reject(payloadError);
 
