@@ -76,14 +76,16 @@ export default class MathsController extends Controller {
         return null;
     }
 
-    parseFloats(parametres){
+    parseFloats(keys) {
         return new Promise((resolve, reject) => {
-            let params = [];
-            for (let i = 0; i < parametres.length; i++) {
-                let value = parseFloat(parametres[i]);
-                if (isNaN(value))
-                    reject(`'${this.HttpContext.payload[i]}' parameter is not a number`);
-                params.push(value);
+            let params = {};
+            for (let key of keys) {
+                let value = parseFloat(this.HttpContext.payload[key]);
+                if (isNaN(value)) {
+                    reject(`'${this.HttpContext.payload[key]}' parameter is not a number`);
+                    return;
+                }
+                params[key] = value;
             }
             resolve(params);
         });
@@ -91,35 +93,35 @@ export default class MathsController extends Controller {
 
     add() {
         return new Promise(async (resolve, reject) => {
-
             let payloadError = this.verifyPayload(["x", "y"]);
-            if (payloadError != null)
+            if (payloadError != null) 
                 reject(payloadError);
-
-            let params = await this.parseFloats(this.HttpContext.payload)
+    
+            let params = await this.parseFloats(["x", "y"])
             .catch((error) => {
                 reject(error);
             });
-
+    
             resolve(params.x + params.y);
         });
     }
+    
 
     subtract() {
         return new Promise(async (resolve, reject) => {
-
             let payloadError = this.verifyPayload(["x", "y"]);
-            if (payloadError != null)
-                reject(payloadError);
-
-            let params = await this.parseFloats(this.HttpContext.payload)
-            .catch((error) => {
-                reject(error);
+            if (payloadError != null) 
+                return reject(payloadError);
+    
+            let params = await this.parseFloats(["x", "y"]).catch((error) => {
+                return reject(error);
             });
-
+    
+            if (!params) return reject("Parameters 'x' or 'y' are undefined.");
             resolve(params.x - params.y);
         });
     }
+    
 
     multiply() {
         return new Promise(async (resolve, reject) => {
@@ -128,7 +130,7 @@ export default class MathsController extends Controller {
             if (payloadError != null)
                 reject(payloadError);
 
-            let params = await this.parseFloats(this.HttpContext.payload)
+            let params = await this.parseFloats(["x", "y"])
             .catch((error) => {
                 reject(error);
             });
@@ -144,7 +146,7 @@ export default class MathsController extends Controller {
             if (payloadError != null)
                 reject(payloadError);
 
-            let params = await this.parseFloats(this.HttpContext.payload)
+            let params = await this.parseFloats(["x", "y"])
             .catch((error) => {
                 reject(error);
             });
@@ -163,7 +165,7 @@ export default class MathsController extends Controller {
             if (payloadError != null)
                 reject(payloadError);
 
-            let params = await this.parseFloats(this.HttpContext.payload)
+            let params = await this.parseFloats(["x", "y"])
             .catch((error) => {
                 reject(error);
             });
@@ -182,7 +184,7 @@ export default class MathsController extends Controller {
             if (payloadError != null)
                 reject(payloadError);
 
-            let params = await this.parseFloats(this.HttpContext.payload)
+            let params = await this.parseFloats(["x", "y"])
             .catch((error) => {
                 reject(error);
             });
@@ -201,7 +203,7 @@ export default class MathsController extends Controller {
             if (payloadError != null)
                 reject(payloadError);
 
-            let params = await this.parseFloats(this.HttpContext.payload)
+            let params = await this.parseFloats(["x", "y"])
             .catch((error) => {
                 reject(error);
             });
@@ -220,7 +222,7 @@ export default class MathsController extends Controller {
             if (payloadError != null)
                 reject(payloadError);
 
-            let params = await this.parseFloats(this.HttpContext.payload)
+            let params = await this.parseFloats(["x", "y"])
             .catch((error) => {
                 reject(error);
             });
