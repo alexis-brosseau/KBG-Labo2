@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test du service /api/maths</title>
-    <link rel="stylesheet" href="./MathsTests/css/site.css">    
+    <link rel="stylesheet" href="./MathsTests/css/site.css">
 </head>
+
 <body>
 
     <div class="container">
@@ -22,7 +24,7 @@
             <legend>Tests</legend>
             <pre id="results" class="TestResultContainer"></pre>
         </fieldset>
-        
+
         <fieldset class="container">
             <legend>Verdict</legend>
             <pre id="verdict"></pre>
@@ -33,51 +35,52 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="./MathsTests/js/API_Maths.js"></script>
     <script>
+        import { factorial, isPrime, findPrime } from './MathsTests/js/mathUtilities.js';
         function goHelp() {
             window.location.href = "./MathsTests/help.html";
         }
 
-        $("#start-tests").click( async () => {
+        $("#start-tests").click(async () => {
             const apiUrl = $("#api-url").text() + "/api/maths";
             const tests = [
-                {"op": "+", "x": -111, "y": -244},
-                {"op": "-", "x": 1, "y": "abc"},
-                {"n": "a", "op": "p"},
-                {"op": "-", "x": 111, "y": 244},
-                {"op": "*", "x": 11.56, "y": 244.12345},
-                {"op": "/", "x": 99, "y": 11.06},
-                {"op": "/", "x": 99, "y": 0},
-                {"op": "/", "x": 0, "y": 0},
-                {"op": "%", "x": 5, "y": 5},
-                {"op": "%", "x": 100, "y": 13},
-                {"op": "%", "x": 100, "y": 0},
-                {"op": "%", "x": 0, "y": 0},
-                {"n": 0, "op": "!"},
-                {"n": 0, "op": "p"},
-                {"n": 1, "op": "p"},
-                {"n": 2, "op": "p"},
-                {"n": 5, "op": "p"},
-                {"n": 6, "op": "p"},
-                {"n": 6.5, "op": "p"},
-                {"n": 113, "op": "p"},
-                {"n": 114, "op": "p"},
-                {"n": 1, "op": "np"},
-                {"n": 30, "op": "np"},
-                {"X": "111", "op": "+", "y": "244"},
-                {"Y": "244", "op": "+", "x": 111},
-                {"op": "+", "x": 111, "y": 244, "z": "0"},
-                {"n": 5, "op": "!", "z": "0"},
-                {"n": 5.5, "op": "!"},
-                {"z": "0"},
-                {"n": -5, "op": "!"},
-                {"x": null},
+                { "op": "+", "x": -111, "y": -244 },
+                { "op": "-", "x": 1, "y": "abc" },
+                { "n": "a", "op": "p" },
+                { "op": "-", "x": 111, "y": 244 },
+                { "op": "*", "x": 11.56, "y": 244.12345 },
+                { "op": "/", "x": 99, "y": 11.06 },
+                { "op": "/", "x": 99, "y": 0 },
+                { "op": "/", "x": 0, "y": 0 },
+                { "op": "%", "x": 5, "y": 5 },
+                { "op": "%", "x": 100, "y": 13 },
+                { "op": "%", "x": 100, "y": 0 },
+                { "op": "%", "x": 0, "y": 0 },
+                { "n": 0, "op": "!" },
+                { "n": 0, "op": "p" },
+                { "n": 1, "op": "p" },
+                { "n": 2, "op": "p" },
+                { "n": 5, "op": "p" },
+                { "n": 6, "op": "p" },
+                { "n": 6.5, "op": "p" },
+                { "n": 113, "op": "p" },
+                { "n": 114, "op": "p" },
+                { "n": 1, "op": "np" },
+                { "n": 30, "op": "np" },
+                { "X": "111", "op": "+", "y": "244" },
+                { "Y": "244", "op": "+", "x": 111 },
+                { "op": "+", "x": 111, "y": 244, "z": "0" },
+                { "n": 5, "op": "!", "z": "0" },
+                { "n": 5.5, "op": "!" },
+                { "z": "0" },
+                { "n": -5, "op": "!" },
+                { "x": null },
             ];
 
             $("#results").text('');
 
             let errorCount = 0;
             for (const test of tests) {
-                await webAPI_getMaths(test).then( (result) => {
+                await webAPI_getMaths(test).then((result) => {
 
                     let status = "OK";
                     if (verify(test, result)) {
@@ -90,11 +93,11 @@
             }
 
             if (errorCount > 0) {
-                if(errorCount == 1){
+                if (errorCount == 1) {
                     $("#verdict").text("Tests terminés avec " + errorCount + " erreur.");
                 }
-                else{
-                    $("#verdict").text("Tests terminés avec " + errorCount + " erreurs."); 
+                else {
+                    $("#verdict").text("Tests terminés avec " + errorCount + " erreurs.");
                 }
             } else {
                 $("#verdict").text("Bravo!!! Aucun problème!");
@@ -102,8 +105,109 @@
         });
 
         function verify(test, result) {
-            return true;
+            if (!result.op || !['+', '-', '*', '/', '%', '!', 'p', 'np'].includes(result.op)) {
+                return result.error != null;
+            }
+            if (result.op == null) {
+                return result.error != null;
+            }
+            if (['+', '-', '*', '/', '%'].includes(result.op)) {
+                if (!('x' in result) || !('y' in result) || isNaN(parseFloat(result.x)) || isNaN(parseFloat(result.y))) {
+                    return result.error != null;
+                }
+                const x = parseFloat(result.x);
+                const y = parseFloat(result.y);
+
+                switch (result.op) {
+                    case '+': return result.value == x + y;
+                    case '-': return result.value == x - y;
+                    case '*': return result.value == x * y;
+                    case '/':
+                        if (y === 0) return result.value == "NaN";
+                        return result.value == x / y;
+                    case '%':
+                        if (y === 0) return result.value == "NaN";
+                        return result.value == x % y;
+                }
+            }
+
+            if (['!', 'p', 'np'].includes(result.op)) {
+                if (!('n' in result) || isNaN(parseFloat(result.n)) || parseFloat(result.n) < 0) {
+                    return result.error != null;
+                }
+
+                const n = parseFloat(result.n);
+
+                switch (result.op) {
+                    case '!': return result.value == factorial(n);
+                    case 'p': return result.value == isPrime(n);
+                    case 'np': return result.value == findPrime(n);
+                }
+            }
+
+            return false;
+
+
+        }
+
+        //CEST MIEU DE LE FAIRE DANS UN SEULE FONCTION? OU JE FAIS PLUSIEURS FONCTION QUE J'APPELE???
+        function verifyMathOperation(result) {
+            const nbKeys = 4;
+            if (Object.keys(result).length !== nbKeys) {
+                return result.error != null;
+            }
+
+            if (!ValiderOperande(result.x) || !ValiderOperande(result.y)) {
+                return result.error != null;
+            }
+            const resultAttendu = Calculer(result.op, parseInt(result.x), parseInt(result.y));
+            return result.value === resultAttendu;
+        }
+        function VerifyOpUnParametre(result) {
+
+            const expectedKeys = 3;
+            if (Object.keys(result).length !== expectedKeys) {
+                return result.error != null;
+            }
+
+            if (!ValiderOperande(result.n) || parseInt(result.n) < 0) {
+                return result.error != null;
+            }
+
+            const expectedValue = CalculerOpUnParametre(result.op, parseInt(result.n));
+            return result.value === expectedValue;
+        }
+
+        function ValiderOperande(value) {
+            return value != null && !isNaN(parseInt(value));
+        }
+
+
+        function Calculer(op, x, y) {
+            switch (op) {
+                case '+': return x + y;
+                case '-': return x - y;
+                case '*': return x * y;
+                case '/':
+                    if (y === 0) return (x === 0) ? "NaN" : x / y;
+                    return x / y;
+                case '%':
+                    if (y === 0) return "NaN";
+                    return x % y;
+                default: return null;
+            }
+        }
+
+
+        function CalculerOpUnParametre(op, n) {
+            switch (op) {
+                case '!': return factorial(n);
+                case 'p': return isPrime(n) ? 1 : 0; 
+                case 'np': return findPrime(n);
+                default: return null;
+            }
         }
     </script>
 </body>
+
 </html>
