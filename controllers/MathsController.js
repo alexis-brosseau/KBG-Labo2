@@ -54,7 +54,7 @@ export default class MathsController extends Controller {
         // Check if the operation is valid
         let operation = operations[this.HttpContext.payload["op"]];
         if (!operation) {
-            this.throw("'op' parameter is not valid.");
+            this.throw("'op' parameter is not valid");
             return;
         }
 
