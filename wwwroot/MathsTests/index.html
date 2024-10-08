@@ -14,7 +14,7 @@
         <h1>Test du service /api/maths</h1>
         <fieldset>
             <legend>URL du service</legend>
-            <input type="text" id="api-url" value="localhost:5000">
+            <input style="width: 250px;" type="text" id="api-url" value="localhost:5000">
             <span>/api/maths</span>
             <button type="button" id="start-tests">Démarrer le test</button>
             <button type="button" onclick="goHelp()">Aide</button>
@@ -112,6 +112,10 @@
                 if (!('x' in result) || !('y' in result) || isNaN(parseFloat(result.x)) || isNaN(parseFloat(result.y))) {
                     return result.error != null;
                 }
+                if (findExcessKeys(result, ['op', 'x', 'y', 'value']) != null) {
+                    return result.error != null;
+                }
+
                 const x = parseFloat(result.x);
                 const y = parseFloat(result.y);
 
@@ -134,8 +138,12 @@
                     return result.error != null;
                 }
 
+                if (findExcessKeys(result, ['op', 'n', 'value']) != null) {
+                    return result.error != null;
+                }
+
                 const n = parseFloat(result.n);
-                if (n%1 != 0 || n < 1) {
+                if (n % 1 != 0 || n < 1) {
                     return result.error != null;
                 }
 
@@ -150,31 +158,38 @@
         }
 
         function factorial(n) {
-                if (n === 0 || n === 1) {
-                    return 1;
-                }
-                return n * factorial(n - 1);
+            if (n === 0 || n === 1) {
+                return 1;
             }
+            return n * factorial(n - 1);
+        }
 
-            function isPrime(value) {
-                for (var i = 2; i < value; i++) {
-                    if (value % i === 0) {
-                        return false;
-                    }
+        function isPrime(value) {
+            for (var i = 2; i < value; i++) {
+                if (value % i === 0) {
+                    return false;
                 }
-                return value > 1;
             }
+            return value > 1;
+        }
 
-            function findPrime(n) {
-                let primeNumer = 0;
-                for (let i = 0; i < n; i++) {
+        function findPrime(n) {
+            let primeNumer = 0;
+            for (let i = 0; i < n; i++) {
+                primeNumer++;
+                while (!isPrime(primeNumer)) {
                     primeNumer++;
-                    while (!isPrime(primeNumer)) {
-                        primeNumer++;
-                    }
                 }
-                return primeNumer;
             }
+            return primeNumer;
+        }
+
+        function findExcessKeys(object, keys) {
+            for (let key in object)
+                if (!keys.includes(key))
+                    return key;
+            return null;
+        }
     </script>
 </body>
 

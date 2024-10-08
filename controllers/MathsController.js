@@ -106,7 +106,7 @@ export default class MathsController extends Controller {
             if (isNaN(y))
                 reject("'y' parameter is not a number");
 
-            resolve(x + y + 1);
+            resolve(x + y);
         });
     }
 
