@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test du service /api/maths</title>
-    <link rel="stylesheet" href="./MathsTests/css/site.css">
+    <link rel="stylesheet" href="http://localhost:5000/MathsTests/css/site.css">
 </head>
 
 <body>
@@ -33,10 +33,10 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="./MathsTests/js/API_Maths.js"></script>
+    <script src="http://localhost:5000/MathsTests/js/API_Maths.js"></script>
     <script>
         function goHelp() {
-            window.location.href = "./MathsTests/help.html";
+            window.location.href = "http://127.0.0.1:5000/api/maths?";
         }
 
         $("#start-tests").click(async () => {
@@ -145,11 +145,9 @@
             }
 
             return false;
-
-
         }
 
-        //CEST MIEU DE LE FAIRE DANS UN SEULE FONCTION? OU JE FAIS PLUSIEURS FONCTION QUE J'APPELE???
+        //
         function verifyMathOperation(result) {
             const nbKeys = 4;
             if (Object.keys(result).length !== nbKeys) {
@@ -177,6 +175,7 @@
             return result.value === expectedValue;
         }
 
+        
         function ValiderOperande(value) {
             return value != null && !isNaN(parseInt(value));
         }
@@ -206,6 +205,8 @@
                 default: return null;
             }
         }
+        //
+
         function factorial(n) {
                 if (n === 0 || n === 1) {
                     return 1;

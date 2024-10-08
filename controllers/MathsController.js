@@ -1,18 +1,11 @@
 import Controller from './Controller.js';
 import { findMissingKeys, findExcessKeys } from '../utilities.js';
 import { factorial, isPrime, findPrime } from '../mathUtilities.js';
+import fs from 'fs';
 
 export default class MathsController extends Controller {
     constructor(HttpContext) {
         super(HttpContext);
-    }
-    get(){
-        if(this.HttpContext.path.queryString == '?'){
-            let helpPagePath = path.join(process.cwd(), "wwwroot/MathsTests/help.html");
-            let content = fs.readFileSync(helpPagePath);
-            this.HttpContext.response.content("text/html", content);
-          
-        }
     }
 
     throw(error_message) {
@@ -22,6 +15,19 @@ export default class MathsController extends Controller {
     }
 
     async get() {
+
+        
+        if (this.HttpContext.payload == null) {
+            if(this.HttpContext.path.queryString == '?'){
+                let content = fs.readFileSync("./wwwroot/MathsTests/help.html");
+                this.HttpContext.response.content("text/html", content);
+            }
+            else {
+                let content = fs.readFileSync("./wwwroot/MathsTests/index.html");
+                this.HttpContext.response.content("text/html", content);
+            }
+            return;
+        }
 
         if (findMissingKeys(this.HttpContext.payload, ["op"])) {
             this.throw("'op' parameter is missing");
@@ -100,7 +106,7 @@ export default class MathsController extends Controller {
             if (isNaN(y))
                 reject("'y' parameter is not a number");
 
-            resolve(x + y);
+            resolve(x + y + 1);
         });
     }
 
