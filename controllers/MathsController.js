@@ -6,6 +6,14 @@ export default class MathsController extends Controller {
     constructor(HttpContext) {
         super(HttpContext);
     }
+    get(){
+        if(this.HttpContext.path.queryString == '?'){
+            let helpPagePath = path.join(process.cwd(), "wwwroot/MathsTests/help.html");
+            let content = fs.readFileSync(helpPagePath);
+            this.HttpContext.response.content("text/html", content);
+          
+        }
+    }
 
     throw(error_message) {
         this.HttpContext.payload["error"] = error_message;
